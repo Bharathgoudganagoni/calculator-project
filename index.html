@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculator</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Lottie -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.10.1/lottie.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+</head>
+<body>
+
+  
+  <!-- Animated Theme Toggle -->
+  <label id="theme-toggle-button">
+    <input type="checkbox" id="toggle">
+    <svg viewBox="0 0 69.667 44" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(3.5 3.5)">
+        <g id="container"><rect fill="#83cbd8" rx="17.5" height="35" width="60.667"></rect></g>
+        <g id="button" transform="translate(2.333 2.333)">
+          <g id="sun">
+            <circle fill="#f8e664" cx="15.167" cy="15.167" r="15.167"></circle>
+            <path fill="rgba(246,254,247,0.29)" d="M11.667,0A11.667,11.667,0,1,1,0,11.667,11.667,11.667,0,0,1,11.667,0Z"></path>
+            <circle fill="#fcf4b9" cx="7" cy="7" r="7" transform="translate(8.167 8.167)"></circle>
+          </g>
+          <g id="moon" opacity="0">
+            <circle fill="#cce6ee" cx="15.167" cy="15.167" r="15.167" transform="translate(31.5 5.83)"></circle>
+          </g>
+        </g>
+        <g id="cloud"><path fill="#fff" d="M3512.81,173.815c...Z"></path></g>
+        <g id="stars" opacity="0"></g>
+      </g>
+    </svg>
+  </label>
+
+  <!-- Lottie mic button -->
+  <div id="mic-lottie" title="Speak your expression"></div>
+  
+
+  <!-- Calculator UI -->
+  <div class="calculator-wrapper">
+    <div class="calculator">
+      <input type="text" id="display" class="display" readonly placeholder="0" />
+      <div class="button-grid">
+        <button class="btn">7</button>
+        <button class="btn">8</button>
+        <button class="btn">9</button>
+        <button class="btn">+</button>
+
+        <button class="btn">6</button>
+        <button class="btn">5</button>
+        <button class="btn">4</button>
+        <button class="btn">-</button>
+
+        <button class="btn">3</button>
+        <button class="btn">2</button>
+        <button class="btn">1</button>
+        <button class="btn">*</button>
+
+        <button class="btn" id="clear">C</button>
+        <button class="btn">0</button>
+        <button class="btn" id="equal">=</button>
+        <button class="btn">/</button>
+      </div>
+    </div>
+    <div class="calc-label cinzel">CALCULATOR</div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+  <script>
+    // Toggle dark mode
+    document.getElementById('toggle').addEventListener('change', function () {
+      document.body.classList.toggle('dark-theme');
+    });
+
+    // 🎙️ Voice Assistant + Lottie Logic
+    const micContainer = document.getElementById("mic-lottie");
+
+    micContainer.style.position = "fixed";
+    micContainer.style.top = "650px";
+    micContainer.style.right = "500px";
+    micContainer.style.width = "60px";
+    micContainer.style.height = "60px";
+    micContainer.style.cursor = "pointer";
+    micContainer.style.zIndex = "1000";
+
+    const micAnimation = lottie.loadAnimation({
+      container: micContainer,
+      renderer: "svg",
+      loop: false,
+      autoplay: false,
+      path: "mic.json" // replace this with your .json animation path
+    });
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      micContainer.addEventListener("click", () => {
+        micAnimation.goToAndPlay(0, true); // Play animation
+        speak("Let's start");
+        recognition.start();
+      });
+
+      recognition.onresult = function (event) {
+        const speech = event.results[0][0].transcript.toLowerCase();
+        const expression = convertSpeechToMath(speech);
+        if (expression) {
+          document.getElementById("display").value = expression;
+          const result = eval(expression);
+          document.getElementById("display").value = result;
+          speak("The answer is " + result);
+        } else {
+          document.getElementById("display").value = "Invalid voice input";
+        }
+      };
+
+      recognition.onerror = function (event) {
+        alert("🎤 Error: " + event.error);
+      };
+    }
+
+    function speak(message) {
+      const utter = new SpeechSynthesisUtterance(message);
+      window.speechSynthesis.speak(utter);
+    }
+
+    function convertSpeechToMath(speech) {
+      return speech
+        .replace(/plus/g, "+")
+        .replace(/minus/g, "-")
+        .replace(/times|into|x/g, "*")
+        .replace(/divided by|by/g, "/")
+        .replace(/ /g, "");
+    }
+  </script>
+</body>
+</html>

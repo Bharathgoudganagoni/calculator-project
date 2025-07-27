@@ -1,0 +1,255 @@
+/* General Fonts */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Cinzel", serif;
+}
+
+/* Calculator Wrapper */
+.calculator-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background: linear-gradient(to right, #0f2027, #386979, #2c5364);
+}
+
+/* Calculator Body */
+.calculator {
+  width: 330px;
+  height: 500px;
+  background: #7d7d7d;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 1.4);
+}
+
+/* Display */
+.display {
+  width: 92%;
+  height: 80px;
+  margin-bottom: 16px;
+  border: none;
+  border-radius: 8px;
+  text-align: right;
+  padding: 10px 14px;
+  font-size: 1.5rem;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+  font-family: 'Orbitron', monospace;
+  letter-spacing: 2px;
+}
+
+/* Buttons Grid */
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+/* Buttons */
+.btn {
+  height: 70px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  background: linear-gradient(145deg, #ffffff, #e0e0e0);
+  box-shadow: 4px 4px 10px rgba(24, 7, 7, 0.4), -4px -4px 10px rgba(255,255,255,0.3);
+  transition: all 0.1s ease;
+}
+.btn:hover {
+  transform: scale(1.05);
+  background: #f0f0f0;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+.btn:active {
+  transform: scale(0.95);
+  box-shadow: inset 2px 2px 6px rgba(0,0,0,0.4), inset -2px -2px 6px rgba(255,255,255,0.2);
+}
+
+/* Special Buttons */
+#equal {
+  background: linear-gradient(145deg, #ff4d4d, #e60000);
+  color: #fff;
+}
+#equal:hover {
+  background: #ff1a1a;
+}
+#equal:active {
+  box-shadow: inset 2px 2px 6px rgba(0,0,0,0.5);
+}
+#clear {
+  background: linear-gradient(145deg, #f44336, #c0392b);
+  color: #fff;
+}
+#clear:hover {
+  background: #c0392b;
+}
+#clear:active {
+  box-shadow: inset 2px 2px 6px rgba(0,0,0,0.5);
+}
+
+/* Label */
+.calc-label {
+  position: absolute;
+  top: 682px;
+  left: 861px;
+  font-size: 1.6rem;
+  color: #ffffffb9;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+/* Font helper */
+.cinzel {
+  font-family: "Cinzel", serif;
+}
+
+/* Dark Theme Overrides */
+.dark-theme .calculator-wrapper {
+  background: linear-gradient(to right, #1b1b1b, #333333, #000000);
+}
+.dark-theme .calculator {
+  background-color: #4f4f4f;
+}
+.dark-theme .display {
+  background-color: #222;
+  color: #00ffcc;
+}
+.dark-theme .btn {
+  background: #444;
+  color: #fff;
+}
+.dark-theme .btn:hover {
+  background: #555;
+}
+.dark-theme #equal {
+  background: #cc0000;
+}
+.dark-theme #clear {
+  background: #cc0000;
+}
+.dark-theme .calc-label {
+  color: #ccc;
+}
+
+/* === Fluffy Robin Animated Toggle === */
+#theme-toggle-button {
+  position: fixed;
+  top: 40px;
+  right: 50px;
+  font-size: 17px;
+  display: inline-block;
+  width: 5em;
+  cursor: pointer;
+  z-index: 999;
+}
+
+/* Hide default checkbox */
+#toggle {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Animations */
+#container,
+#patches,
+#stars,
+#button,
+#sun,
+#moon,
+#cloud {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.25s;
+}
+
+#toggle:checked + svg #container {
+  fill: #2b4360;
+}
+#toggle:checked + svg #button {
+  transform: translate(28px, 2.333px);
+}
+
+#sun {
+  opacity: 1;
+}
+#toggle:checked + svg #sun {
+  opacity: 0;
+}
+
+#moon {
+  opacity: 0 !important; /* Hidden always */
+}
+
+#toggle:checked + svg #moon {
+  opacity: 0 !important; /* Ensure moon never appears */
+}
+
+#cloud {
+  opacity: 1;
+}
+#toggle:checked + svg #cloud {
+  opacity: 0;
+}
+#stars {
+  opacity: 0;
+}
+#toggle:checked + svg #stars {
+  opacity: 1;
+}
+
+/* Mic Button */
+#mic-btn {
+  position: fixed;
+  top: 650px;
+  right: 500px;
+  background-color: #ffffffcc;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.8rem;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  transition: background 0.3s ease;
+}
+#mic-btn:hover {
+  background-color: #eeeeee;
+}
+
+/* Heartbeat Animation */
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.2); }
+  40% { transform: scale(0.95); }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+#mic-lottie {
+  position: fixed;
+  top: 650px;
+  right: 500px;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+/* Heartbeat pulse effect */
+#mic-lottie.pulsing {
+  animation: pulse 1.2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
